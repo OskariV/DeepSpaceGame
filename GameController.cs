@@ -10,10 +10,11 @@ namespace Game
 	public class GameController : MonoBehaviour
 	{
 		private UnitPlayer player;
-
+		private UnitEnemy enemy;
 		void Start ()
 		{
 			this.player = new UnitPlayer ("Player", 3);
+			this.enemy = new UnitEnemy ("testEnemy", 3);
 
 			//testing
 			Debug.Log (this.player.GetUnitName ());
@@ -25,6 +26,7 @@ namespace Game
 		void Update ()
 		{
 			this.player.Move ();
+			this.enemy.Move ();
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace Units
 		public UnitPlayer (string unitName, int hitPoints) : base (unitName, hitPoints)
 		{
 			this.playerShip = GameObject.Find ("PlayerShip");
-			this.playerShipSpeed = 3f;
+			this.playerShipSpeed = 6f;
 		}
 
 		/// <summary>
@@ -51,6 +51,7 @@ namespace Units
 			}
 			if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
 				this.playerShip.transform.Translate (0, -0.01f * playerShipSpeed, 0);
+
 			}
 		}
 	}

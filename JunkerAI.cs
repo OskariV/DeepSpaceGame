@@ -1,47 +1,64 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Units
 {
-	public class UnitEnemy : MonoBehaviour
+	public class JunkerAI : MonoBehaviour
 	{
+		private Radar radar;
+		private MissileLauncher missileLauncher;
 		private GameObject playerShip;
 		private GameObject variableForPrefab;
+
 		public float enemyShipSpeed { get; set; }
+
 		public int enemyHitPoints { get; set; }
 
 
-		void Start()
+		void Start ()
 		{
 			this.playerShip = GameObject.Find ("PlayerShip");
-			this.enemyHitPoints = 10;
-			this.enemyShipSpeed = 3f;
+			this.enemyHitPoints = 100;
+			this.enemyShipSpeed = 2f;
+			this.radar = GetComponentInChildren<Radar> ();
+			this.missileLauncher = GetComponentInChildren<MissileLauncher> ();
+			Debug.Log (missileLauncher);
 		}
 
 		void Update ()
 		{
 			if (this.playerShip != null) {
+				
 				Vector3 targetPos = Camera.main.WorldToScreenPoint (playerShip.transform.position);
 				Vector3 selfPos = Camera.main.WorldToScreenPoint (this.transform.position);
 				selfPos.x = selfPos.x - targetPos.x;
 				selfPos.y = selfPos.y - targetPos.y;
 				float angle = Mathf.Atan2 (selfPos.y, selfPos.x) * Mathf.Rad2Deg;
-				this.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle - 270));
-				this.transform.Translate (0, 0.01f * enemyShipSpeed, 0, Space.Self);
+				bool targetInRange = radar.RadarPing ();
+
+				if (targetInRange == false) {
+					
+					this.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle - 270));
+					this.transform.Translate (0, 0.01f * enemyShipSpeed, 0, Space.Self);
+				
+				}
+				if (targetInRange == true) {
+					this.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle - 180));
+					this.transform.Translate (0, 0.01f * enemyShipSpeed, 0, Space.Self);
+					missileLauncher.rocket ();
+
+				}
 			}
+
 		}
 		public void TakeDamage (int x)
 		{
-			Debug.Log ("damage");
 			enemyHitPoints = enemyHitPoints - x;
 			Debug.Log (enemyHitPoints);
 			if (enemyHitPoints < 0) {
 				Destroy (this.gameObject);
 			}
 		}
-
 	}
 }
-
-

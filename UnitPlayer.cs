@@ -5,54 +5,79 @@ using UnityEngine;
 namespace Units
 {
 	
-	public class UnitPlayer : UnitBase
+	public class UnitPlayer : MonoBehaviour
 	{
 		private GameObject playerShip;
 
-		private float playerShipSpeed { get; set; }
+		public int playerHitPoints { get; set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Units.UnitPlayer"/> class.
-		/// </summary>
-		/// <param name="unitName">Unit name.</param>
-		/// <param name="hitPoints">Hit points.</param>
-		public UnitPlayer (string unitName, int hitPoints) : base (unitName, hitPoints)
+		public float playerShipSpeed { get; set; }
+		//public GameObject shot;
+		//public Transform shotSpawn;
+		//public float fireRate;
+		//private float nextFire;
+
+		public void TakeDamage (int amount)
+		{
+			playerHitPoints = playerHitPoints - amount;
+			Debug.Log (playerHitPoints);
+			if (playerHitPoints < 0) {
+				Destroy (this.gameObject);
+			}
+		}
+
+		void Start ()
 		{
 			this.playerShip = GameObject.Find ("PlayerShip");
-			this.playerShipSpeed = 6f;
+			this.playerHitPoints = 100;
+			this.playerShipSpeed = 8f;
 		}
 
-		/// <summary>
-		/// Used to initiate movement for the UnitPlayer object.
-		/// </summary>
-		public void Move ()
+		void Update ()
 		{
-			//rotation
-			Vector3 mousePos = Input.mousePosition;
-			mousePos.z = 0f;
+			if (this.playerShip != null) {
+				
+				//if (Input.GetButton("Fire1") && Time.time > nextFire)
+				//{
+				//nextFire = Time.time + fireRate;
+				//Instantiate (shot, shotSpawn.position, shotSpawn.rotation);
+				//}
 
-			Vector3 objectPos = Camera.main.WorldToScreenPoint (playerShip.transform.position);
-			mousePos.x = mousePos.x - objectPos.x;
-			mousePos.y = mousePos.y - objectPos.y;
+				//rotation
+				Vector3 mousePos = Input.mousePosition;
+				mousePos.z = 0f;
 
-			float angle = Mathf.Atan2 (mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-			playerShip.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle - 90));
+				Vector3 objectPos = Camera.main.WorldToScreenPoint (playerShip.transform.position);
+				mousePos.x = mousePos.x - objectPos.x;
+				mousePos.y = mousePos.y - objectPos.y;
 
-			//movement
-			if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
-				this.playerShip.transform.Translate (-0.01f * playerShipSpeed, 0, 0);
+				float angle = Mathf.Atan2 (mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+				playerShip.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle - 90));
 
-			}
-			if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
-				this.playerShip.transform.Translate (0.01f * playerShipSpeed, 0, 0);
-			}
-			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
-				this.playerShip.transform.Translate (0, 0.01f * playerShipSpeed, 0);
-			}
-			if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
-				this.playerShip.transform.Translate (0, -0.01f * playerShipSpeed, 0);
-
+				//movement
+				if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
+					this.playerShip.transform.Translate (-0.01f * playerShipSpeed, 0, 0);
+				}
+				if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
+					this.playerShip.transform.Translate (0.01f * playerShipSpeed, 0, 0);
+				}
+				if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
+					this.playerShip.transform.Translate (0, 0.01f * playerShipSpeed, 0);
+				}
+				if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
+					this.playerShip.transform.Translate (0, -0.01f * playerShipSpeed, 0);
+				}
 			}
 		}
+		public void OnCollisionEnter2D (Collision2D collision)
+		{
+			if (collision.gameObject) {
+				TakeDamage (10);
+
+			}
+
+		}
+
 	}
 }
+

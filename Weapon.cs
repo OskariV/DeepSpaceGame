@@ -5,42 +5,26 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
 
-	public float fireRate = 0;
-	public float fireSpeed = 0;
-	public float rocketSpeed = 0;
-	public float rocketRate = 0;
-	public float Dmg = 10;
-	public LayerMask dontShoot;
-	public Transform bulletSpawn;
-
-	private Vector3 mousePos;
+	private float fireRateLaser = 5f;
+	private float fireRateRocket = 1f;
+	private float fireSpeed = 1000f;
+	private float rocketSpeed = 300f;
 	private float fireTime = 0;
-	private Transform fire;
 
-	void Start ()
-	{
-		fire = transform.Find ("Fire");
-		if (fire == null) {
-			Debug.LogError ("Cant fire");
-		}
-	}
-	
-	// Update is called once per frame
+
 	void Update ()
 	{
-		this.mousePos = Input.mousePosition;
-		mousePos.z = 0.0f;
 
 
-		if (fireRate == 0) {
+		if (fireRateLaser == 0 || fireRateRocket == 0) {
 			Debug.LogError ("Cant Shoot Fire rate 0");
 		} else {
 			if (Input.GetMouseButton (0) && Time.time > fireTime) {
-				fireTime = Time.time + 1 / fireRate;
+				fireTime = Time.time + 1 / fireRateLaser;
 				Shoot ();
 			}
 			if (Input.GetMouseButton (1) && Time.time > fireTime) {
-				fireTime = Time.time + 1 / fireRate;
+				fireTime = Time.time + 1 / fireRateRocket;
 				rocket ();
 			}
 		}
@@ -50,7 +34,6 @@ public class Weapon : MonoBehaviour
 	{
 
 		GameObject bullet = Instantiate (Resources.Load ("Prefabs/blastLaser 1", typeof(GameObject))) as GameObject;
-		Debug.Log ("testi" + bullet.ToString ());
 		bullet.transform.position = transform.position + transform.up * 1f;
 		bullet.transform.rotation = transform.rotation;
 		bullet.SetActive (true);
@@ -62,7 +45,6 @@ public class Weapon : MonoBehaviour
 	void rocket ()
 	{
 		GameObject rocket = Instantiate (Resources.Load ("Prefabs/rocketPic 1", typeof(GameObject))) as GameObject;
-		Debug.Log ("rocketestSpaceXshiet" + rocket.ToString ());
 		rocket.transform.position = transform.position + transform.up * 1f;
 		rocket.transform.rotation = transform.rotation;
 		rocket.SetActive (true);

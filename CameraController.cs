@@ -21,6 +21,8 @@ public class CameraController : MonoBehaviour {
 	void LateUpdate () 
 	{
 		// Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
-		transform.position = playerShip.transform.position + offset;
+		if (this.playerShip != null) {
+			transform.position = playerShip.transform.position + offset;
+		}
 	}
 }

@@ -10,7 +10,7 @@ namespace Units
 		void OnTriggerEnter2D (Collider2D other)
 		{
 			if (!other.tag.Contains ("Radar")) {
-				other.SendMessage ("TakeDamage", 5);
+				other.SendMessage ("TakeDamage", 5f);
 				GameObject explosion = Instantiate (Resources.Load ("Prefabs/LaserImpact", typeof(GameObject))) as GameObject;
 				explosion.transform.position = transform.position;
 				Destroy (explosion, 0.5f);

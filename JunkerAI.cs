@@ -13,13 +13,13 @@ namespace Units
 
 		public float enemyShipSpeed { get; set; }
 
-		public int enemyHitPoints { get; set; }
+		public float enemyHitPoints { get; set; }
 
 
 		void Start ()
 		{
 			this.playerShip = GameObject.Find ("PlayerShip");
-			this.enemyHitPoints = 100;
+			this.enemyHitPoints = 100f;
 			this.enemyShipSpeed = 2f;
 			this.radar = GetComponentInChildren<Radar> ();
 			this.missileLauncher = GetComponentInChildren<MissileLauncher> ();
@@ -29,7 +29,7 @@ namespace Units
 		void Update ()
 		{
 			if (this.playerShip != null) {
-				
+				this.RepairShip ();
 				Vector3 targetPos = Camera.main.WorldToScreenPoint (playerShip.transform.position);
 				Vector3 selfPos = Camera.main.WorldToScreenPoint (this.transform.position);
 				selfPos.x = selfPos.x - targetPos.x;
@@ -52,12 +52,18 @@ namespace Units
 			}
 
 		}
-		public void TakeDamage (int x)
+		public void TakeDamage (float x)
 		{
 			enemyHitPoints = enemyHitPoints - x;
 			Debug.Log (enemyHitPoints);
 			if (enemyHitPoints < 0) {
 				Destroy (this.gameObject);
+			}
+		}
+		private void RepairShip ()
+		{
+			if (this.enemyHitPoints < 100f) {
+				this.enemyHitPoints = this.enemyHitPoints + 0.08f;
 			}
 		}
 	}

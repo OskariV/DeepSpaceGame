@@ -13,13 +13,13 @@ namespace Units
 
 		public float enemyShipSpeed { get; set; }
 
-		public int enemyHitPoints { get; set; }
+		public float enemyHitPoints { get; set; }
 
 
 		void Start ()
 		{
 			this.playerShip = GameObject.Find ("PlayerShip");
-			this.enemyHitPoints = 5;
+			this.enemyHitPoints = 5f;
 			this.enemyShipSpeed = 6f;
 			this.radar = GameObject.Find ("RadarCarrierSub").GetComponent<Radar> ();
 			this.laser = GetComponentInChildren<Laser> ();
@@ -47,7 +47,7 @@ namespace Units
 			}
 
 		}
-		public void TakeDamage (int x)
+		public void TakeDamage (float x)
 		{
 			enemyHitPoints = enemyHitPoints - x;
 			Debug.Log (enemyHitPoints);

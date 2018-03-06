@@ -8,42 +8,66 @@ namespace Units
 	public class UnitPlayer : MonoBehaviour
 	{
 		private GameObject playerShip;
+		private float playerHitPoints;
+		private float playerShipSpeed;
 
-		public int playerHitPoints { get; set; }
-
-		public float playerShipSpeed { get; set; }
-		//public GameObject shot;
-		//public Transform shotSpawn;
-		//public float fireRate;
-		//private float nextFire;
-
-		public void TakeDamage (int amount)
+		/// <summary>
+		/// Sets the player hit points.
+		/// </summary>
+		/// <param name="value">Value.</param>
+		public void SetPlayerHitPoints(float value)
 		{
-			playerHitPoints = playerHitPoints - amount;
-			Debug.Log (playerHitPoints);
-			if (playerHitPoints < 0) {
+			this.playerHitPoints = value;
+			// hp palkki juttu
+		}
+		/// <summary>
+		/// Gets the player hit points.
+		/// </summary>
+		/// <returns>The player hit points.</returns>
+		public float GetPlayerHitPoints()
+		{
+			return this.playerHitPoints;
+		}
+		/// <summary>
+		/// Takes the damage.
+		/// </summary>
+		/// <param name="amount">Amount.</param>
+		public void TakeDamage (float amount)
+		{
+			SetPlayerHitPoints(GetPlayerHitPoints() - amount);
+			if (GetPlayerHitPoints() <= 0) {
 				Destroy (this.gameObject);
+			}
+		}
+		private void RepairShip ()
+		{
+			if (this.playerHitPoints < 100f) {
+				this.playerHitPoints = this.playerHitPoints + 0.08f;
+			}
+		}
+		//calls the TakeDamage method when the player's gameobject touches something.
+		public void OnCollisionEnter2D (Collision2D collision)
+		{
+			if (collision.gameObject) {
+				TakeDamage (10);
 			}
 		}
 
 		void Start ()
 		{
 			this.playerShip = GameObject.Find ("PlayerShip");
-			this.playerHitPoints = 100;
+			SetPlayerHitPoints(100f);
 			this.playerShipSpeed = 8f;
 		}
 
 		void Update ()
 		{
+			// checks if the playership GameObject still exists.
 			if (this.playerShip != null) {
-				
-				//if (Input.GetButton("Fire1") && Time.time > nextFire)
-				//{
-				//nextFire = Time.time + fireRate;
-				//Instantiate (shot, shotSpawn.position, shotSpawn.rotation);
-				//}
 
-				//rotation
+				RepairShip ();
+				
+				//Playership rotation (ship points towards mouse position).
 				Vector3 mousePos = Input.mousePosition;
 				mousePos.z = 0f;
 
@@ -54,7 +78,7 @@ namespace Units
 				float angle = Mathf.Atan2 (mousePos.y, mousePos.x) * Mathf.Rad2Deg;
 				playerShip.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle - 90));
 
-				//movement
+				//Playership movement (WASD- or arrowkey movement).
 				if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
 					this.playerShip.transform.Translate (-0.01f * playerShipSpeed, 0, 0);
 				}
@@ -69,15 +93,6 @@ namespace Units
 				}
 			}
 		}
-		public void OnCollisionEnter2D (Collision2D collision)
-		{
-			if (collision.gameObject) {
-				TakeDamage (10);
-
-			}
-
-		}
-
 	}
 }
 

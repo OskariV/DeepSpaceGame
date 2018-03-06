@@ -6,12 +6,12 @@ namespace Units
 {
 	public class Health : MonoBehaviour
 	{
-		private int hitPoints;
+		private float hitPoints;
 		void Start()
 		{
 			//this.gameObject.
 		}
-		public void TakeDamage (int x)
+		public void TakeDamage (float x)
 		{
 			Debug.Log ("damage");
 			hitPoints = hitPoints - x;

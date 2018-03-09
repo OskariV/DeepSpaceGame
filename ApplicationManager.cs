@@ -16,7 +16,7 @@ public class ApplicationManager : MonoBehaviour {
 
 	public void LoadSceneOnClick(int  sceneNo)
 	{
-		SceneManager.LoadScene (1);
+		SceneManager.LoadScene (sceneNo);
 
 	
 	}

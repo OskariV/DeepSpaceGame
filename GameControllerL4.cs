@@ -8,12 +8,13 @@ using Units;
 namespace Game
 {
 
-	public class GameController : MonoBehaviour
+	public class GameControllerL4 : MonoBehaviour
 	{
 		public UnitPlayer player; 
 		public GameObject enemy;
 		private Text textHp;
 		private Vector3 test;
+		public FanaticSpawner spawner1;
 
 		// these values are used to prevent the if-loops executing more than once.
 		private bool winCond = false;
@@ -32,6 +33,7 @@ namespace Game
 			if (GameObject.Find ("PlayerShip") != null) {
 				TextColor ();
 				this.textHp.text = this.player.GetPlayerHitPoints ().ToString("0");
+				this.spawner1.Spawn ();
 			}
 			// Same as above but defaults to "0" when the gameobject is destroyed.
 			if (GameObject.Find ("PlayerShip") == null) {

@@ -5,15 +5,17 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Units;
 
-namespace Game
+namespace Level2
 {
 
-	public class GameController : MonoBehaviour
+	public class GameControllerL2 : MonoBehaviour
 	{
 		public UnitPlayer player; 
 		public GameObject enemy;
 		private Text textHp;
 		private Vector3 test;
+		public FanaticSpawner spawner;
+		public FanaticSpawner spawner2;
 
 		// these values are used to prevent the if-loops executing more than once.
 		private bool winCond = false;
@@ -32,6 +34,8 @@ namespace Game
 			if (GameObject.Find ("PlayerShip") != null) {
 				TextColor ();
 				this.textHp.text = this.player.GetPlayerHitPoints ().ToString("0");
+				this.spawner.Spawn ();
+				this.spawner2.Spawn ();
 			}
 			// Same as above but defaults to "0" when the gameobject is destroyed.
 			if (GameObject.Find ("PlayerShip") == null) {
@@ -40,7 +44,7 @@ namespace Game
 			}
 			/*when this code cant find a gameobject with the tag "Enemy",
 			it returns to the assigned scene (currently set at 0).*/
-			if ((GameObject.FindWithTag ("Enemy") == null) && (winCond == false)) {
+			if ((GameObject.FindWithTag ("Finish") == null) && (winCond == false)) {
 				Debug.Log ("inside if enemy loop");
 				this.winCond = true;
 				SceneManager.LoadScene (4); // 0 is main menu.
@@ -72,3 +76,4 @@ namespace Game
 		}
 	}
 }
+

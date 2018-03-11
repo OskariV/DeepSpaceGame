@@ -19,7 +19,7 @@ namespace Units
 
 		public float enemyHitPoints { get; set; }
 
-
+		//Sets health, speed, finds it's own radars and weapons and targets player.
 		void Start ()
 		{
 			this.playerShip = GameObject.Find ("PlayerShip");
@@ -37,15 +37,16 @@ namespace Units
 		{
 			if (this.playerShip != null) {
 				this.RepairShip ();
+				//aims towards player.
 				Vector3 targetPos = Camera.main.WorldToScreenPoint (playerShip.transform.position);
 				Vector3 selfPos = Camera.main.WorldToScreenPoint (this.transform.position);
 				selfPos.x = selfPos.x - targetPos.x;
 				selfPos.y = selfPos.y - targetPos.y;
 				float angle = Mathf.Atan2 (selfPos.y, selfPos.x) * Mathf.Rad2Deg;
-
+				//Moves towards player
 				this.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle - 270));
 				this.transform.Translate (0, 0.01f * enemyShipSpeed, 0, Space.Self);
-
+				// When player is in TargetRadars range fires weapons.
 				bool targetInSight = targetRadar.RadarPing ();
 				if (targetInSight == true) {
 					laser1.Shoot ();
@@ -58,7 +59,7 @@ namespace Units
 			}
 
 		}
-
+		// Makes ship take damage and destroys it when health is depleted.
 		public void TakeDamage (float x)
 		{
 			enemyHitPoints = enemyHitPoints - x;
@@ -67,6 +68,7 @@ namespace Units
 				Destroy (this.gameObject);
 			}
 		}
+		// Repairs ship if health is below full.
 		private void RepairShip ()
 		{
 			if (this.enemyHitPoints < 500f) {

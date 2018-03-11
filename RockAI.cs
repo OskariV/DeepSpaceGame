@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RockAI : MonoBehaviour {
-
+	
+	// Sets health for a rock object.
 	public float enemyHitPoints { get; set; }
 	void Start () {
 		this.enemyHitPoints = 1000f;
@@ -12,6 +13,8 @@ public class RockAI : MonoBehaviour {
 	void Update () {
 		
 	}
+	
+	// Makes rock object take damage and destroys it when health is depleted.
 	void OnCollisionStayEnter2D (Collision2D other)
 	{
 		TakeDamage (1);

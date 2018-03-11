@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//Sets spawn rate.
 public class FanaticSpawner : MonoBehaviour {
 	private float spawnTime = 0;
 	private float spawnRate = 0.2f;
 	public void Spawn ()
 	{
+		// If enough time passed spawns Fanatic unit.
 		if (Time.time > spawnTime) {
 			spawnTime = Time.time + 1 / spawnRate;
 

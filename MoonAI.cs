@@ -18,7 +18,7 @@ public class MoonAI : MonoBehaviour
 		public float enemyShipSpeed { get; set; }
 		public float enemyHitPoints { get; set; }
 
-
+		//Sets health, speed, finds it's own radars and weapons and targets player.
 		void Start()
 		{
 			this.playerShip = GameObject.Find ("PlayerShip");
@@ -35,6 +35,7 @@ public class MoonAI : MonoBehaviour
 
 		void Update ()
 		{
+			//aims towards player.
 			if (this.playerShip != null) {
 				this.RepairShip ();
 				Vector3 targetPos = Camera.main.WorldToScreenPoint (playerShip.transform.position);
@@ -43,11 +44,14 @@ public class MoonAI : MonoBehaviour
 				selfPos.y = selfPos.y - targetPos.y;
 				float angle = Mathf.Atan2 (selfPos.y, selfPos.x) * Mathf.Rad2Deg;
 				this.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle - 270));
+				// Moves towards player.
 				this.transform.Translate (0, 0.01f * enemyShipSpeed, 0, Space.Self);
 				bool outer = targetRadar.RadarPing ();
 				bool inner = radar.RadarPing ();
+				// Spawns units.
 				fanaticSpawner.Spawn ();
 				carrierSubSpawner.Spawn ();
+				// If player is either too far or too close fires weapons towards player.
 				if (outer == false) {
 					doomLaser.Shoot ();
 				}
@@ -58,6 +62,7 @@ public class MoonAI : MonoBehaviour
 
 			}
 		}
+		// Makes ship take damage and destroys it when health is depleted.
 		public void TakeDamage (float x)
 		{
 			enemyHitPoints = enemyHitPoints - x;
@@ -66,6 +71,7 @@ public class MoonAI : MonoBehaviour
 				Destroy (this.gameObject);
 			}
 		}
+		// Repairs ship if health is below full. Repairs faster when more damage is taken.
 		private void RepairShip ()
 		{
 			if (this.enemyHitPoints < 1000f && this.enemyHitPoints > 500f) {

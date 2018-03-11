@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// Literally a copy of the laser script
 public class LaserLeft : MonoBehaviour 
 {
 

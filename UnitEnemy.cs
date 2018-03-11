@@ -11,7 +11,7 @@ namespace Units
 		public float enemyShipSpeed { get; set; }
 		public float enemyHitPoints { get; set; }
 
-
+		// Finds player at the start of the scene and prepares itself.
 		void Start()
 		{
 			this.playerShip = GameObject.Find ("PlayerShip");
@@ -21,6 +21,7 @@ namespace Units
 
 		void Update ()
 		{
+			// Heals if has taken damage and moves towards player.
 			if (this.playerShip != null) {
 				this.RepairShip ();
 				Vector3 targetPos = Camera.main.WorldToScreenPoint (playerShip.transform.position);
@@ -32,6 +33,7 @@ namespace Units
 				this.transform.Translate (0, 0.01f * enemyShipSpeed, 0, Space.Self);
 			}
 		}
+		// Allows unit to take damage.
 		public void TakeDamage (float x)
 		{
 			enemyHitPoints = enemyHitPoints - x;
@@ -40,6 +42,7 @@ namespace Units
 				Destroy (this.gameObject);
 			}
 		}
+		// Repairs damage up to a maximum.
 		private void RepairShip ()
 		{
 			if (this.enemyHitPoints < 10f) {

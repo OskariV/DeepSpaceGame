@@ -6,7 +6,8 @@ namespace Units
 {
 	
 	public class UnitPlayer : MonoBehaviour
-	{
+	{	
+		//finds the gameobject to control.
 		private GameObject playerShip;
 		private float playerHitPoints;
 		private float playerShipSpeed;
@@ -39,6 +40,7 @@ namespace Units
 				Destroy (this.gameObject);
 			}
 		}
+		//repairs damage up to a cap.
 		private void RepairShip ()
 		{
 			if (this.playerHitPoints < 100f) {
@@ -52,7 +54,7 @@ namespace Units
 				TakeDamage (10);
 			}
 		}
-
+		//finds the gameobject to control at the start of scene.
 		void Start ()
 		{
 			this.playerShip = GameObject.Find ("PlayerShip");
